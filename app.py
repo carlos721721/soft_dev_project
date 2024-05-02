@@ -65,9 +65,3 @@ df['odometer'] = df.groupby('model_year')['odometer'].transform(lambda x: x.fill
 # Display the number of missing values after filling
 print("Number of missing values after filling:")
 print(df.isnull().sum())
-
-
-# Save the cleaned dataset
-cleaned_file_path = "/Users/carlosquintero/Desktop/soft_dev_project/cleaned_vehicles_us.csv"
-df.to_csv(cleaned_file_path, index=False)
-print("Cleaned dataset saved successfully.")
