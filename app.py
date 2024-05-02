@@ -31,3 +31,43 @@ if show_scatterplot:
     st.write("## Vehicle Price vs. Mileage")
     fig_scatter = px.scatter(df, x='odometer', y='price', title='Vehicle Price vs. Mileage')
     st.plotly_chart(fig_scatter)
+
+# Check for duplicates
+duplicates = df.duplicated()
+
+# Count the number of duplicates
+num_duplicates = duplicates.sum()
+print("Number of duplicates:", num_duplicates)
+
+# Remove duplicates
+df = df[~duplicates]
+
+# Reset index
+df.reset_index(drop=True, inplace=True)
+
+# Display the shape of the cleaned dataset
+print("Shape of the cleaned dataset:", df.shape)
+
+
+
+# Group by 'model' and fill missing 'model_year' values with the median year for each group
+df['model_year'] = df.groupby('model')['model_year'].transform(lambda x: x.fillna(x.median()))
+
+# Group by 'model' and fill missing 'cylinders' values with the median cylinders for each group
+df['cylinders'] = df.groupby('model')['cylinders'].transform(lambda x: x.fillna(x.median()))
+
+# Group by 'model_year' (or 'model' and 'year' combined) and fill missing 'odometer' values with the median or mean odometer reading for each group
+df['odometer'] = df.groupby('model_year')['odometer'].transform(lambda x: x.fillna(x.median()))
+
+# If you prefer to use 'model' and 'year' combined, you can use the following code:
+# df['odometer'] = df.groupby(['model', 'model_year'])['odometer'].transform(lambda x: x.fillna(x.median()))
+
+# Display the number of missing values after filling
+print("Number of missing values after filling:")
+print(df.isnull().sum())
+
+
+# Save the cleaned dataset
+cleaned_file_path = "/Users/carlosquintero/Desktop/soft_dev_project/cleaned_vehicles_us.csv"
+df.to_csv(cleaned_file_path, index=False)
+print("Cleaned dataset saved successfully.")
