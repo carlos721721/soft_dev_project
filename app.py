@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 
 # Read the dataset into a Pandas DataFrame
-@st.cache  # This decorator will cache the data, making it faster to load
+@st.cache_data  # This decorator will cache the data, making it faster to load
 def load_data():
     url = "https://practicum-content.s3.us-west-1.amazonaws.com/datasets/vehicles_us.csv"
     df = pd.read_csv(url)
